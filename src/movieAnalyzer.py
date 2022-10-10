@@ -17,21 +17,21 @@ def get_rating_popularity_stats(index, type):
     data = get_movies_data()
     match type:
         case "count": #This case seems really useless?
-            return str(data[index].astype("string").str.replace(",","").astype("float").count().round(decimals=2))
+            return "{0:.2f}".format(data[index].astype("string").str.replace(",","").astype("float").count())
         case "mean":
-            return str(data[index].astype("string").str.replace(",","").astype("float").mean().round(decimals=2))
+            return "{0:.2f}".format(data[index].astype("string").str.replace(",","").astype("float").mean())
         case "median":
-            return str(data[index].astype("string").str.replace(",","").astype("float").median().round(decimals=2))
+            return "{0:.2f}".format(data[index].astype("string").str.replace(",","").astype("float").median())
         case "min":
-            return str(data[index].astype("string").str.replace(",","").astype("float").min().round(decimals=2))
+            return "{0:.2f}".format(data[index].astype("string").str.replace(",","").astype("float").min())
         case "max": 
-            return str(data[index].astype("string").str.replace(",","").astype("float").max().round(decimals=2))
+            return "{0:.2f}".format(data[index].astype("string").str.replace(",","").astype("float").max())
         case _:
             return "Invalid index or type" 
 
 def get_actor_movies_release_year_range(actor, upper, lower=0):
     if upper < lower: raise ValueError
-    if not isinstance(actor, str): raise TypeError
+    if not isinstance(actor, str) or not isinstance(upper, int) or not isinstance(lower, int): raise TypeError
     if actor == "": raise ValueError
     data = get_movies_data()
     #First filters out movies in the year range
