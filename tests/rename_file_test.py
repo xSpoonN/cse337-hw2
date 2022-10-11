@@ -11,6 +11,7 @@ class TestRenameFiles:
         if os.path.exists(testPath): shutil.rmtree(testPath)
         os.mkdir(testPath)
         os.mkdir(testPath + "dir/")
+        os.mkdir(testPath + "snap012.txt/")
         with open(testPath + "snap000.txt", 'w') as f: pass
         with open(testPath + "snap001.txt", 'w') as f: pass
         with open(testPath + "snap002.txt", 'w') as f: pass
@@ -22,9 +23,10 @@ class TestRenameFiles:
         with open(testPath + "asdf.txt", 'w') as f: pass
         with open(testPath + "dir/snap009.txt", 'w') as f: pass
         rename(testPath); outfiles = os.listdir(testPath); outfiles.sort()
-        assert outfiles == ["asdf.txt","dir","nap002.txt","snap000.txt","snap001.txt","snap002.txt","snap003.txt","snap004.txt","snap005.txt","snap01.txt"]
+        assert outfiles == ["asdf.txt","dir","nap002.txt","snap000.txt","snap001.txt","snap002.txt","snap003.txt","snap004.txt","snap005.txt","snap01.txt","snap012.txt"]
         outfiles = os.listdir(testPath + "dir/"); 
         assert outfiles == ["snap009.txt"]
+        assert os.path.exists(testPath + "snap012.txt/")
     def test_RenameFiles_EmptyDir(self):
         testPath = "./snaptest/"
         if os.path.exists(testPath): shutil.rmtree(testPath)
@@ -38,3 +40,14 @@ class TestRenameFiles:
         assert rename("garbage") == None
         rename(testPath); outfiles = os.listdir(testPath);
         assert outfiles == []
+    def test_RenameFiles_DirConflict(self):
+        testPath = "./snaptest/"
+        if os.path.exists(testPath): shutil.rmtree(testPath)
+        os.mkdir(testPath)
+        os.mkdir(testPath + "snap003.txt/")
+        with open(testPath + "snap000.txt", 'w') as f: pass
+        with open(testPath + "snap001.txt", 'w') as f: pass
+        with open(testPath + "snap002.txt", 'w') as f: pass
+        with open(testPath + "snap004.txt", 'w') as f: pass
+        assert rename(testPath) == "Directory name conflict!"
+        
