@@ -27,5 +27,5 @@ def curve_low_scoring_exams(x, k):
     weight = np.reshape(np.mean(y,axis=1) < k,(4,1)) * np.reshape(100-np.max(y, axis=1), (4,1))
     #(6) Add it to the original array to get weighted scores.
     weightedScores = y+weight
-    #(7) Sort by indices from calling argsort on the mean array. (8) Round to 1st decimal place.
-    return np.round(weightedScores[np.argsort(np.mean(y,axis=1))],decimals=1)
+    #(7) Sort by indices from calling argsort on the mean of the array. (8) Round to 1st decimal place.
+    return np.round(weightedScores[np.argsort(np.mean(weightedScores,axis=1))],decimals=1)
